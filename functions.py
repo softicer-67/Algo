@@ -5,16 +5,18 @@ def load_file():
 
     res = []
     for i in range(1, len(file)):
-        res.append([
-            str(file[i][0]),
-            float(file[i][1]),
-            float(file[i][2]),
-            float(file[i][3]),
-            float(file[i][4]),
-            int(file[i][5]),
-            str(file[i][6])
-        ])
-    return res
+        try:
+            res.append([
+                str(file[i][0]),
+                float(file[i][1]),
+                float(file[i][2]),
+                float(file[i][3]),
+                float(file[i][4]),
+                int(file[i][5]),
+                str(file[i][6])
+            ])
+        except ValueError:
+            return res
 
 
 def filter_func(value: str, data):
