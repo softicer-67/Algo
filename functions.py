@@ -1,3 +1,7 @@
+import fileinput
+from functools import lru_cache
+from operator import itemgetter
+
 
 def load_file():
     with open('all_stocks_5yr.csv', 'r') as i:
@@ -5,7 +9,9 @@ def load_file():
 
     res = []
     for i in range(1, len(file)):
-        try:
+        if file[i][1] == '' or file[i][2] == '' or file[i][3] == '':
+            pass
+        else:
             res.append([
                 str(file[i][0]),
                 float(file[i][1]),
@@ -15,22 +21,23 @@ def load_file():
                 int(file[i][5]),
                 str(file[i][6])
             ])
-        except ValueError:
-            return res
+    return res
 
 
 def filter_func(value: str, data):
     res = []
     value = ''.join(value)
-
     column = ['date', 'open', 'high', 'low', 'close', 'volume', 'Name']
 
     if value in column:
-        value = column.index(value)
-    data.sort(key=lambda row: row[value])
+        num = column.index(value)
 
-    for i in data:
-        res.append(i)
+        for i in range(len(data)):
+            res.append(data[i])
+            if data[i][num] > res[i][num]:
+                res.append(data[i])
+            else:
+                pass
     return res
 
 
@@ -56,10 +63,20 @@ def sort_revers(method, data):
         return sorted(data, reverse=False)
 
 
+@lru_cache
+def get_date(name, date):
+    res = []
+    for line in fileinput.input(['all_stocks_5yr.csv']):
+        if name in line and date in line:
+            res.append(line)
+    return res
+
+
 def write_file(value, res):
     with open(value, "w") as f:
         for item in res:
             res = str(item).split(',')
             f.write(f"{res[0]} | {res[1]} | {res[2]} | {res[3]} | {res[4]} | {res[5]} | {res[6]}\n")
+
 
 
