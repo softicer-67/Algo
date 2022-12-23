@@ -1,6 +1,5 @@
 import fileinput
 from functools import lru_cache
-from operator import itemgetter
 
 
 def load_file():
@@ -33,11 +32,9 @@ def filter_func(value: str, data):
         num = column.index(value)
 
         for i in range(len(data)):
-            res.append(data[i])
-            if data[i][num] > res[i][num]:
+            if data[i][num] > data[i][num-1]:
                 res.append(data[i])
-            else:
-                pass
+        res = sorted(data, key=lambda x: x[num], reverse=True)
     return res
 
 
