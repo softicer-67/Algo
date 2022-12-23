@@ -34,7 +34,9 @@ def filter_func(value: str, data):
         for i in range(len(data)):
             if data[i][num] > data[i][num-1]:
                 res.append(data[i])
-        res = sorted(data, key=lambda x: x[num], reverse=True)
+            else:
+                pass
+        res = sorted(data, key=lambda x: x[num])
     return res
 
 
@@ -54,10 +56,12 @@ def sort_func(method, data):
 
 
 def sort_revers(method, data):
+    res = []
     if method == 'asc':
-        return sorted(data, reverse=True)
+        res = sorted(data, reverse=True)
     elif method == 'desc':
-        return sorted(data, reverse=False)
+        res = sorted(data, reverse=False)
+    return res
 
 
 @lru_cache
